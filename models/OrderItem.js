@@ -1,25 +1,20 @@
-module.exports = (sequelize, DataTypes) => {
-   const OrderItem = sequelize.define("OrderItem", {
-      quantity: {
-         type: DataTypes.FLOAT
-      },
-      price: {
-         type: DataTypes.FLOAT,
-      },
-      total: {
-         type: DataTypes.FLOAT,
-      }
+const mongoose = require("mongoose");
 
-   }, {
-      tableName: "order_items",
+const orderItemSchema = new mongoose.Schema({
+   quantity: Number,
+   price: Number,
+   total: Number,
+});
 
-   });
+const OrderItem = mongoose.model("OrderItem", orderItemSchema);
 
-   OrderItem.associate = models => {
-      OrderItem.belongsTo(models.Order, { foreignKey: "order_id" });
-      OrderItem.belongsTo(models.Product, { foreignKey: "product_id" });
+module.exports = OrderItem;
 
-   };
 
-   return OrderItem;
-}
+
+
+// OrderItem.associate = models => {
+//    OrderItem.belongsTo(models.Order, { foreignKey: "order_id" });
+//    OrderItem.belongsTo(models.Product, { foreignKey: "product_id" });
+
+// };

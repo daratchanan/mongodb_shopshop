@@ -1,40 +1,42 @@
-module.exports = (sequelize, DataTypes) => {
-   const Admin = sequelize.define("Admin", {
-      firstname: {
-         type: DataTypes.STRING,
-         allowNull: false,
-         validate: {
-          len: [3,16]
-         }
-      },
-      lastname: {
-         type: DataTypes.STRING,
-         allowNull: true,
-         validate: {
-            len: [3,16]
-         }
-      },
-      email: {
-         type: DataTypes.STRING,
-         allowNull: false,
-         unique: true
-      },
-      password: {
-         type: DataTypes.STRING,
-         allowNull: false,
-      },
-      phone_number: {
-         type: DataTypes.STRING,
-         allowNull: false
-      },
-      address: {
-         type: DataTypes.STRING
-      }
-   }, {
-      tableName: "admin",
-   });
+const mongoose = require("mongoose");
 
-   return Admin;
-};
+const adminSchema = new mongoose.Schema({
+   firstname: {
+      type: String,
+      require: true,
+      trim: true,
+   },
+   lastname: {
+      type: String,
+      require: true,
+      trim: true,
+   },
+   email: {
+      type: String,
+      required: true,
+      trim: true,
+      lowercase: true,
+      unique: true,
+   },
+   password: {
+      type: String,
+      required: true,
+      minlength: 6,
+   },
+   phone_number: {
+      type: String,
+      require: true,
+      trim: true,
+   },
+   address: {
+      type: String,
+      trim: true,
+   }
+});
 
+const Admin = mongoose.model("Admin", adminSchema);
+
+module.exports = Admin;
+      
+   
 

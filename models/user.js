@@ -22,7 +22,6 @@ const userSchema = new mongoose.Schema({
       type: String,
       required: true,
       minlength: 6,
-      select: false
    },
    phone_number: {
       type: String,
@@ -31,7 +30,6 @@ const userSchema = new mongoose.Schema({
    },
    address: {
       type: String,
-      require: true,
       trim: true,
    }
 });

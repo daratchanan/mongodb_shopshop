@@ -1,11 +1,12 @@
-const db = require("../models");
+const User = require("../models/user");
 const bcryptjs = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 
 const register = async (req, res) => {
+   
    try {
       const { firstname, lastname, email, password, phone_number, address } = req.body;
-      const targetUser = await db.User.findOne({ where: { email } });
+      const targetUser = await User.findOne({ email })
       const phoneNumber = String(phone_number);
 
       if (targetUser) {
@@ -14,7 +15,7 @@ const register = async (req, res) => {
          const salt = bcryptjs.genSaltSync(Number(process.env.SALT_ROUND));
          const hashedPwd = bcryptjs.hashSync(password, salt);
 
-         const newUser = await db.User.create({
+         const user = new User({
             firstname,
             lastname,
             email,
@@ -23,14 +24,16 @@ const register = async (req, res) => {
             password: hashedPwd
          });
 
+         const newUser = await user.save();
+         
          const payLoad = {
-            id: newUser.id,
+            id: newUser._id,
             firstname: newUser.firstname,
             email: newUser.email,
          };
          const token = jwt.sign(payLoad, process.env.SECRET, { expiresIn: 86400 });
 
-         res.status(201).send({ message: "User created.", token });
+         res.status(201).send({ message: "User created.", token});
       }
    } catch (err) {
       res.status(500).send({ message: err.message }); 
@@ -40,15 +43,15 @@ const register = async (req, res) => {
 const login = async (req, res) => {
    try {
       const { email, password } = req.body;
-      const targetUser = await db.User.findOne({ where: { email } });
-
+      const targetUser = await User.findOne({ email });
+      console.log(targetUser);
       if (!targetUser) {
          res.status(400).send({ message: "email or password incorrect" });
       } else {
          const isCorrect = bcryptjs.compareSync(password, targetUser.password);
          if (isCorrect) {
             const payLoad = {
-               id: targetUser.id,
+               id: targetUser._id,
                firstname: targetUser.firstname,
                email: targetUser.email,
             };
@@ -59,6 +62,7 @@ const login = async (req, res) => {
          }
       }
    } catch (err) {
+      console.log(err);
       res.status(500).send({ message: err.message });
    }
 };

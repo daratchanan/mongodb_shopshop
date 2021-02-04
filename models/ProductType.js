@@ -1,17 +1,16 @@
-module.exports = (sequelize, DataTypes) => {
-   const ProductType = sequelize.define("ProductType", {
-      name: {
-         type: DataTypes.STRING,
-      },
+const mongoose = require("mongoose");
 
-   }, {
-      tableName: "product_types"
-   });
+const product_typesSchema = new mongoose.Schema({
+   name: String
+});
 
-   ProductType.associate = models => {
-      ProductType.hasMany(models.Product, { foreignKey: "productType_id" });
-      
-   };
+const ProductType = mongoose.model("ProductType", product_typesSchema);
 
-   return ProductType;
-}
+module.exports = ProductType;
+
+
+// ProductType.associate = models => {
+//    ProductType.hasMany(models.Product, { foreignKey: "productType_id" });
+
+// };
+

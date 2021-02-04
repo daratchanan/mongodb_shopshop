@@ -1,18 +1,12 @@
-module.exports = (sequelize, DataTypes) => {
-   const CartItem = sequelize.define("CartItem", {
-      quantity: {
-         type: DataTypes.INTEGER,
-      }
+const mongoose = require("mongoose");
 
-   }, {
-      tableName: "cart_items",
+const cartItemSchma = new mongoose.Schema({
+   quantity: Number,
+});
 
-   });
+const CartItem = mongoose.model("CartItem", cartItemSchma);
 
-   CartItem.associate = models => {
-      CartItem.belongsTo(models.User, { foreignKey: "user_id" });
-      CartItem.belongsTo(models.Product, { foreignKey: "product_id" });
-   };
+module.exports = CartItem;
 
-   return CartItem;
-}
+
+

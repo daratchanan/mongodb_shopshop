@@ -1,30 +1,14 @@
-module.exports = (sequelize, DataTypes) => {
-   const Product = sequelize.define("Product", {
-      name: {
-         type: DataTypes.STRING,
-      },
-      price: {
-         type: DataTypes.FLOAT,
-         allowNull: false,
-      },
-      img: {
-         type: DataTypes.STRING,
-      },
-      description: {
-         type: DataTypes.STRING,
-      },
-      total_sale: {
-         type: DataTypes.INTEGER,
-      }
-   }, {
-      tableName: "products"
-   });
+const mongoose = require("mongoose");
 
-   Product.associate = models => {
-      Product.hasMany(models.OrderItem, { foreignKey: "product_id" });
-      Product.belongsTo(models.ProductType, { foreignKey: "productType_id" });
-      Product.hasMany(models.CartItem, { foreignKey: "product_id" });
-   };
+const productSchema = new mongoose.Schema({
+   name: String,
+   price: Number,
+   img: String,
+   description: String,
+   total_sale: Number
+});
 
-   return Product;
-}
+const Product = mongoose.model("Product", productSchema);
+
+module.exports = Product;
+
