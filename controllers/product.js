@@ -4,13 +4,10 @@ const fs = require('fs');
 const cloudinary = require('cloudinary').v2;
 
 exports.getProducts = async (req, res) => {
-   const products = await Product.find({});
+   // const products = await Product.find({});
+   
+   const products = await Product.find({}).populate({path: 'productType'});
 
-   // const products = await Product.findAll({
-   //    include: {
-   //       model: ProductType
-   //    }
-   // });
    res.status(200).json({ products });
 };
 

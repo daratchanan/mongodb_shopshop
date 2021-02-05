@@ -5,15 +5,16 @@ const passport = require("passport");
 
 const auth = passport.authenticate("jwt-auth", {session: false})
 
-router.get('/top', productController.getTopProduct);
-router.get('/', productController.getProducts);
-router.get('/:id', productController.getProductById);
-router.get('/productlist', auth, productController.getProducts);//admin
 
 router.post('/createProductType', productController.createdProductTypes);
 router.get('/allProductType', productController.getAllProductTypes);
 // router.get('/allProductType', productController.getAllProductTypes);
 // router.get('/allProductType_id/:id', productController.getProductByType);
+
+router.get('/top', productController.getTopProduct);
+router.get('/', productController.getProducts);
+router.get('/:id', productController.getProductById);
+router.get('/productlist', auth, productController.getProducts);//admin
 
 router.post('/', upload.single("image"), productController.createProduct);
 // router.post('/', productController.createProduct);
